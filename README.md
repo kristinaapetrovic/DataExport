@@ -17,6 +17,8 @@ containing a table of duct and accessory parameters.
 git clone <repository-url>
 pip install reportlab
 
+## Table layout
+
 | Column      | Description                                         |
 | ----------- | --------------------------------------------------- |
 | Node        | Node identifier                                     |
