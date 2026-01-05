@@ -10,13 +10,6 @@ containing a table of duct and accessory parameters.
 - Aligns textual and numerical columns for better readability.
 - Simple and lightweight solution without external databases.
 
-## Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-pip install reportlab
-
 ## Table layout
 
 | Column      | Description                                         |
@@ -36,4 +29,13 @@ pip install reportlab
 | pst         | Static pressure                                     |
 | adj.        | Adjustment                                          |
 | Warnings    | Any warnings                                        |
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+pip install reportlab
+
+
 
