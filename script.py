@@ -2,6 +2,7 @@ from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 
+
 # =========================
 # 1. PODACI (ruta)
 # =========================
@@ -59,7 +60,30 @@ route_data = {
     1592797: {"node":"","level":"Level 1","type":"Terminal","product":"VDW-Q-Z-H-M TROX Technik","size":"ø250","length":"","flow":"600 m³/h","velocity":"","pressure_drop":"300.0 Pa","k_factor":"0","dp_l":"0","pt":"0","pst":"0","adj":"","warnings":""}
 }
 
+def wrap_text_smart(text, max_len=20):
+    if not text:
+        return ""
 
+    lines = []
+    text = text.strip()
+
+    while len(text) > max_len:
+        # tražimo poslednji blanko u dozvoljenom opsegu
+        split_pos = text.rfind(" ", 0, max_len + 1)
+
+        if split_pos == -1:
+            # nema blanko znaka → preseci na max_len
+            lines.append(text[:max_len])
+            text = text[max_len:]
+        else:
+            # lomimo po blanko znaku
+            lines.append(text[:split_pos])
+            text = text[split_pos + 1:]  # preskačemo blanko
+
+    if text:
+        lines.append(text)
+
+    return "\n".join(lines)
 
 # =========================
 # 2. PRIPREMA TABELE
@@ -90,12 +114,16 @@ table_data = []
 header = [col[0] for col in columns]
 table_data.append(header)
 
-# Redovi
 for element_id, params in route_data.items():
     row = []
     for col_name, key in columns:
-        value = str(params.get(key, ""))[:15]  # sve kolone max 15 karaktera
-        row.append(value)
+        value = str(params.get(key, ""))
+
+        if key == "product":
+            row.append(wrap_text_smart(value, 20))
+        else:
+            row.append(value[:15])
+
     table_data.append(row)
 # =========================
 # 3. KREIRANJE PDF-a
